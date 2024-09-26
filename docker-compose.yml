@@ -25,6 +25,7 @@ services:
       - GF_SMTP_PASSWORD=${SMTP_PASSWORD}
     volumes:
       - ./grafana:/etc/grafana/provisioning/datasources
+      - grafana_data:/var/lib/grafana
   node_exporter:
     image: quay.io/prometheus/node-exporter:latest
     container_name: node_exporter
@@ -47,3 +48,4 @@ services:
       - /dev/kmsg
 volumes:
   prom_data:
+  grafana_data:
