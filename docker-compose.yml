@@ -1,3 +1,5 @@
+networks:
+  grafana:
 services:
   prometheus:
     image: prom/prometheus
@@ -10,6 +12,8 @@ services:
     volumes:
       - ./prometheus:/etc/prometheus
       - prom_data:/prometheus
+    networks:
+      - grafana
 
   grafana:
     image: grafana/grafana
@@ -28,6 +32,8 @@ services:
     volumes:
       - ./grafana:/etc/grafana/provisioning/datasources
       - grafana_data:/var/lib/grafana
+    networks:
+      - grafana
   node_exporter:
     image: quay.io/prometheus/node-exporter:latest
     container_name: node_exporter
@@ -37,6 +43,8 @@ services:
     restart: unless-stopped
     volumes:
       - "/:/host:ro,rslave"
+    networks:
+      - grafana
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor
@@ -50,6 +58,9 @@ services:
     devices:
       - /dev/kmsg
 
+    networks:
+      - grafana
+
   loki:
     image: grafana/loki:latest
     container_name: loki
@@ -59,6 +70,8 @@ services:
       - ./loki/loki-config.yaml:/etc/loki/local-config.yaml
     command: -config.file=/etc/loki/local-config.yaml
     restart: unless-stopped
+    networks:
+      - grafana
 
   promtail:
     image: grafana/promtail:latest
@@ -68,6 +81,9 @@ services:
       - ./promtail/promtail-config.yaml:/etc/promtail/config.yaml
     command: -config.file=/etc/promtail/config.yaml
     restart: unless-stopped
+    networks:
+      - grafana
+
 volumes:
   prom_data:
   grafana_data:
