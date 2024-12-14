@@ -1,1 +1,1 @@
-Prometheus and Grafana
+Prometheus, Grafana, Loki, Promtail
